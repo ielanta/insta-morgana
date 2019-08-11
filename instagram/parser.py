@@ -1,6 +1,7 @@
 import requests
-from functools import lru_cache
 from json import JSONDecodeError
+from functools import lru_cache
+
 
 
 class InstaAccount:
@@ -17,10 +18,16 @@ class InstaAccount:
         return int(self.data['count'])
 
     def get_media_description(self, num: int) -> str:
-        return self.data['edges'][num]['node']['edge_media_to_caption']['edges'][0]['node']['text']
+        try:
+            return self.data['edges'][num]['node']['edge_media_to_caption']['edges'][0]['node']['text']
+        except IndexError:
+            raise ValueError(f'Please check does {num} posts exist. Only public accounts processed')
 
     def get_media_link(self, num: int) -> str:
-        return self.data['edges'][num]['node']['display_url']
+        try:
+            return self.data['edges'][num]['node']['display_url']
+        except IndexError:
+            raise ValueError(f'Please check does {num} posts exist. Only public accounts processed')
 
     def get_new_media(self) -> list:
         from store.storage import Storage
