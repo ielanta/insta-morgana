@@ -1,3 +1,4 @@
+import logging
 import smtplib
 from email.mime.text import MIMEText
 from settings import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, OBSERVER_EMAIL
@@ -27,8 +28,10 @@ class Mailer:
         for media in new_media:
             text += f"<div><p>{media['description']}</p><img src='{media['link']}' width='640'></div><br/>"
         self.send_mail(subject, text)
+        logging.info(f"Email with {user_id}'s new media was sent")
 
     def send_mail_stories_found(self, user_id: str) -> None:
         subject = f'{user_id} published a story'.capitalize()
         text = f'<h4>Check it out: https://instagram.com/{user_id} </h4>'
         self.send_mail(subject, text)
+        logging.info(f"Email with {user_id}'s stories was sent")
