@@ -8,7 +8,7 @@ from settings import USER_IDS
 from store.storage import Storage
 
 
-def check_media(args) -> None:
+def check_media(args: argparse.Namespace) -> None:
     mailer = Mailer()
     for user_id in args.usernames:
         account = InstaAccount(user_id)
@@ -18,7 +18,7 @@ def check_media(args) -> None:
         logging.info(f'{user_id} media were checked')
 
 
-def check_stories(args) -> None:
+def check_stories(args: argparse.Namespace) -> None:
     mailer = Mailer()
     for user_id in args.usernames:
         account = InstaAccount(user_id)
@@ -27,12 +27,12 @@ def check_stories(args) -> None:
         logging.info(f'{user_id} stories were checked')
 
 
-def init_storage(args) -> None:
+def init_storage(args: argparse.Namespace) -> None:
     storage = Storage()
     storage.set_users_counter(args.usernames)
 
 
-def run_schedule(args):
+def run_schedule(args: argparse.Namespace) -> None:
     schedule.every(8).hours.do(check_media, args)
     schedule.every().day.at("08:00").do(check_stories, args)
     while True:
@@ -53,7 +53,7 @@ if __name__ == '__main__':
                                            parents=[parser], add_help=False)
     stories_parser.set_defaults(func=check_stories)
 
-    storage_parser = subparsers.add_parser('init', help='Init storage by username: count posts',
+    storage_parser = subparsers.add_parser('init', help='Init storage by {username: count posts}',
                                            parents=[parser], add_help=False)
     storage_parser.set_defaults(func=init_storage)
 

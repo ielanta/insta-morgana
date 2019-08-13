@@ -3,7 +3,6 @@ from json import JSONDecodeError
 from functools import lru_cache
 
 
-
 class InstaAccount:
     def __init__(self, user_id: str):
         url = f"https://instagram.com/{user_id}/?__a=1"
